@@ -1,5 +1,7 @@
-import StartupCard from "@components/StartupCard"
+import StartupCard, { StartupCardType } from "@components/StartupCard"
 import SearchBar from "@components/SearchBar"
+import { client } from "@/sanity/lib/client"
+import { STARTUPS_QUERY } from "@/sanity/lib/queries"
 
 const Home = async ({
   searchParams,
@@ -8,20 +10,7 @@ const Home = async ({
 }) => {
   const { query } = await searchParams
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "Pepe el Grillo" },
-      _id: "1",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
-      image:
-        "https://150785984.v2.pressablecdn.com/wp-content/uploads/2025/01/nvidia-geforce-50-series.webp",
-      category: "Technology",
-      title: "Nvidia 5000 series released",
-    },
-  ]
+  const posts = await client.fetch(STARTUPS_QUERY)
 
   return (
     <>

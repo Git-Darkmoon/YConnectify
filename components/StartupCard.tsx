@@ -3,13 +3,16 @@ import { EyeIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "./ui/button"
+import { Author, Startup } from "@/sanity/types"
+
+export type StartupCardType = Omit<Startup, "author"> & { author?: Author }
 
 const StartupCard = ({ post }: { post: StartupCardType }) => {
   const {
     _id,
     _createdAt,
     views,
-    author: { _id: authorId, name: authorName },
+    author,
     title,
     description,
     category,
@@ -27,9 +30,9 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
       </div>
       <div className="flex-between mt-5 gap-5">
         <div className="flex-1">
-          <Link href={`/user/${authorId}`}>
+          <Link href={`/user/${author?._id}`}>
             <p className="text-16-medium line-clamp-1 hover:underline underline-offset-2">
-              {authorName}
+              {author?.name}
             </p>
           </Link>
           <Link href={`/startup/${_id}`}>
@@ -38,10 +41,10 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
             </h3>
           </Link>
         </div>
-        <Link href={`/user/${authorId}`}>
+        <Link href={`/user/${author?._id}`}>
           <Image
-            src={"https://placehold.co/48x48"}
-            alt={title}
+            src={author?.image as string}
+            alt={title || "Startup Pitcher"}
             className="rounded-full"
             width={48}
             height={48}
@@ -51,15 +54,15 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
       <Link href={`/startup/${_id}`}>
         <p className="startup-card_desc">{description}</p>
         <Image
-          src={image}
-          alt={title}
+          src={image as string}
+          alt={title || "startup"}
           className="startup-card_img"
           width={500}
           height={500}
         />
       </Link>
       <div className="flex-between gap-3 mt-5">
-        <Link href={`/?query=${category.toLowerCase()}`}>
+        <Link href={`/?query=${category?.toLowerCase()}`}>
           <p className="text-16-medium hover:text-opacity-60">{category}</p>
         </Link>
         <Button className="startup-card_btn" asChild>
