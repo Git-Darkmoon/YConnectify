@@ -12,3 +12,11 @@ export function formatDate(date: string) {
     day: "numeric",
   })
 }
+
+export function formatNumber(number: number) {
+  if (number === 1) {
+    return "Viewed once"
+  }
+
+  return `${number} views`
+}
